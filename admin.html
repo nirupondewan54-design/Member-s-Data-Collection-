@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    body {font-family: sans-serif; padding: 10px;}
+    table {width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px;}
+    th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}
+    th {background: #1a73e8; color: white;}
+    tr:nth-child(even) {background: #f2f2f2;}
+  </style>
+</head>
+<body>
+  <h2>Submitted Data</h2>
+  <p id="loading">Loading data...</p>
+  <table id="dataTable">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzDJ8h-CSZlKFk6Jz0tUlWQQuv8VDsSSMJ4q8N1lYbNMwpDcvC3fMam8RVOlFqEhPBDrw/exec';
+
+    fetch(scriptURL)
+  .then(res => res.json())
+  .then(data => {
+        document.getElementById('loading').style.display = 'none';
+        const table = document.getElementById('dataTable');
+        const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+
+        if(data.length > 0){
+          thead.innerHTML = '<tr>' + data[0].map(h => `<th>${h}</th>`).join('') + '</tr>';
+          tbody.innerHTML = data.slice(1).map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('');
+        } else {
+          document.getElementById('loading').innerHTML = 'No data found';
+        }
+      })
+  .catch(err => document.getElementById('loading').innerHTML = 'Error loading data');
+  </script>
+</body>
+  </html>
