@@ -1,1 +1,45 @@
-<h1>coming soon</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Submit Form</title>
+  <style>
+    body {font-family: sans-serif; max-width: 500px; margin: 20px auto; padding: 15px;}
+    input, button {width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; font-size: 16px;}
+    button {background: #1a73e8; color: white; border: none; cursor: pointer;}
+    button:active {background: #1557b0;}
+    #msg {margin-top: 15px; font-weight: bold;}
+  </style>
+</head>
+<body>
+  <h2>Information Submit Form</h2>
+  <form id="myForm">
+    <input name="name" placeholder="Name" required>
+    <input name="session" placeholder="Session" required>
+    <input name="institute" placeholder="Institute" required>
+    <input name="address" placeholder="Address" required>
+    <input name="title" placeholder="Title" required>
+    <input name="phone" placeholder="Phone Number" type="tel" required>
+    <button type="submit">Submit</button>
+  </form>
+  <p id="msg"></p>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzDJ8h-CSZlKFk6Jz0tUlWQQuv8VDsSSMJ4q8N1lYbNMwpDcvC3fMam8RVOlFqEhPBDrw/exec';
+    const form = document.getElementById('myForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      msg.innerHTML = "Submitting...";
+      fetch(scriptURL, {method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(form)))})
+   .then(response => {
+        msg.innerHTML = "Success! Data submitted.";
+        form.reset();
+      })
+   .catch(error => msg.innerHTML = 'Error! Try again.');
+    });
+  </script>
+</body>
+</html>
